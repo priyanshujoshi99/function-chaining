@@ -1,0 +1,91 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.inputLabel {
+  background-color: hsla(36, 76%, 53%, 1);
+  color: white;
+  padding: 2px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  margin-bottom: 8px;
+  font-size: 600;
+  line-height: 14.52px;
+  text-align: left;
+}
+
+.outputLabel {
+  composes: inputLabel;
+  background-color: hsla(147, 39%, 49%, 1);
+}
+
+.inputContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 2px solid hsla(36, 100%, 70%, 1);
+  border-radius: 12px;
+  padding: 6px 12px;
+  width: 115px;
+  height: 30px;
+  position: relative;
+}
+
+.inputContainer::before {
+  content: '';
+  position: absolute;
+  left: 81px;
+  height: 100%;
+  width: 1px;
+  background-color: hsla(36, 100%, 92%, 1);
+}
+
+.input {
+  width: 71px;
+  height: 100%;
+  border: none;
+  outline: none;
+  font-size: 14px;
+}
+
+.outputContainer {
+  composes: inputContainer;
+  border: 2px solid hsla(148, 65%, 50%, 1);
+}
+
+.outputContainer::before {
+  content: '';
+  position: absolute;
+  left: 35px;
+  height: 100%;
+  width: 1px;
+  background-color: hsla(148, 64%, 86%, 1);
+}
+
+.output {
+  composes: input;
+  margin-left: 20px;
+  width: 81px;
+}
+
+.circle {
+  flex-grow: 1;
+  height: 100%;
+  border-radius: 50%;
+  background-color: hsla(0, 0%, 100%, 1);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.circle::before {
+  content: '';
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  border: 2px solid hsla(0, 0%, 86%, 1);
+  border-radius: 50%;
+}
