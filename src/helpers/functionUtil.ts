@@ -1,6 +1,8 @@
 import { FunctionItem } from '../slice/functionSlice';
 
 export const validateFunctionInput = (input: string): boolean => {
+  if (input.trim() === '') return true;
+
   // Regular expression to allow numbers, whitespace, basic arithmetic operations, parentheses, and a single variable (e.g., x)
   const validPattern = /^[\d+\-*/^().\s*x]+$/;
   return validPattern.test(input);

@@ -1,16 +1,26 @@
+import { useDispatch, useSelector } from 'react-redux';
+import { getFunctionValue, saveFunctionValue } from '../../slice/functionSlice';
 import styles from './FunctionCard.module.css';
 
 interface IFunctionCarProps {
   cardTitle: string;
-  equation: string;
   nextFunction: string;
 }
 
-const FunctionCard = ({
-  cardTitle,
-  equation,
-  nextFunction
-}: IFunctionCarProps) => {
+const FunctionCard = ({ cardTitle, nextFunction }: IFunctionCarProps) => {
+  const dispatch = useDispatch();
+  const { value } = useSelector(getFunctionValue(cardTitle));
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(
+      saveFunctionValue({
+        functionKey: cardTitle,
+        functionValue: event.target.value,
+        nextFn: nextFunction
+      })
+    );
+  };
+
   return (
     <article className={styles.body}>
       <header className={styles.header}>
@@ -27,7 +37,8 @@ const FunctionCard = ({
             type="text"
             id="equationInput"
             className={styles.input}
-            value={equation}
+            value={value}
+            onChange={handleInputChange}
           />
         </div>
         <div className={styles.nextFn}>

@@ -7,7 +7,7 @@ import {
 export type FunctionItem = {
   key: string;
   value: string;
-  hasError: boolean;
+  nextFn: string;
 };
 
 interface FunctionSliceState {
@@ -31,9 +31,13 @@ export const functionSlice = createSlice({
     },
     saveFunctionValue: (
       state,
-      action: PayloadAction<{ functionKey: string; functionValue: string }>
+      action: PayloadAction<{
+        functionKey: string;
+        functionValue: string;
+        nextFn: string;
+      }>
     ) => {
-      const { functionKey, functionValue } = action.payload;
+      const { functionKey, functionValue, nextFn } = action.payload;
       if (!validateFunctionInput(functionValue)) return;
 
       const { function: fn, index } = findFunctionByKey(
@@ -47,29 +51,14 @@ export const functionSlice = createSlice({
         state.functions.push({
           key: functionKey,
           value: functionValue,
-          hasError: false
+          nextFn
         });
-      }
-    },
-    updateError: (
-      state,
-      action: PayloadAction<{ functionKey: string; hasError: boolean }>
-    ) => {
-      const { functionKey, hasError } = action.payload;
-      const { function: fn, index } = findFunctionByKey(
-        state.functions,
-        functionKey
-      );
-
-      if (fn) {
-        state.functions[index] = { ...fn, hasError };
       }
     }
   }
 });
 
-export const { saveVariableValue, saveFunctionValue, updateError } =
-  functionSlice.actions;
+export const { saveVariableValue, saveFunctionValue } = functionSlice.actions;
 
 // Selectors
 export const getVariableValue = (state: { [prefix]: FunctionSliceState }) =>
@@ -77,5 +66,13 @@ export const getVariableValue = (state: { [prefix]: FunctionSliceState }) =>
 
 export const getFunctionValue =
   (functionKey: string) =>
-  (state: { [prefix]: FunctionSliceState }): FunctionItem | undefined =>
-    state[prefix].functions.find((fn) => fn.key === functionKey);
+  (state: { [prefix]: FunctionSliceState }): FunctionItem =>
+    state[prefix].functions.find((fn) => fn.key === functionKey) ?? {
+      key: '',
+      value: '',
+      nextFn: ''
+    };
+
+export const getAllFunctionValues = (state: {
+  [prefix]: FunctionSliceState;
+}): FunctionItem[] => state[prefix].functions;
