@@ -18,7 +18,7 @@ interface FunctionSliceState {
 const prefix = 'function';
 
 const initialState: FunctionSliceState = {
-  variableValue: 0,
+  variableValue: 2,
   functions: []
 };
 

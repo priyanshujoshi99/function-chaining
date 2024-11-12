@@ -1,5 +1,7 @@
 import classNames from 'classnames';
-import React, { useState } from 'react';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getVariableValue, saveVariableValue } from '../../slice/functionSlice';
 import styles from './InputNumber.module.css';
 
 interface InputNumberProps {
@@ -13,14 +15,15 @@ const InputNumber: React.FC<InputNumberProps> = ({
   value: propValue,
   className
 }) => {
-  const [value, setValue] = useState(2);
+  const dispatch = useDispatch();
+  const value = useSelector(getVariableValue);
 
   const isOutput = type === 'output';
   const labelText = isOutput ? 'Final Output y' : 'Initial value of x';
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!isOutput) {
-      setValue(Number(event.target.value));
+      dispatch(saveVariableValue(Number(event.target.value)));
     }
   };
 
