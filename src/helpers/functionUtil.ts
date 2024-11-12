@@ -23,6 +23,9 @@ export const evaluateEquation = (
   // Replace any remaining 'x' with the variable value
   equation = equation.replace(/x/g, variableValue.toString());
 
+  // Replace '^' with '**' for exponentiation
+  equation = equation.replace(/\^/g, '**');
+
   try {
     const result = new Function('return ' + equation)();
     return typeof result === 'number' ? result : variableValue;
