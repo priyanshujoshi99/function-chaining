@@ -1,30 +1,24 @@
-type MathFunction = (input: string, variableValue?: number) => number | string;
+import { FunctionItem } from '../slice/functionSlice';
 
-const validateInput = (input: string): boolean => {
+export const validateFunctionInput = (input: string): boolean => {
   // Regular expression to allow numbers, whitespace, basic arithmetic operations, parentheses, and a single variable (e.g., x)
   const validPattern = /^[\d+\-*/^().\s*x]+$/;
   return validPattern.test(input);
 };
 
-const evaluateExpression = (
+export const evaluateExpression = (
   expression: string,
   variableValue: number = 0
-): number | string => {
-  if (!validateInput(expression)) return 'Invalid input';
-
-  try {
-    // Replace variable 'x' with its actual numeric value
-    const sanitizedExpression = expression.replace(/x/g, `(${variableValue})`);
-    return new Function(`return ${sanitizedExpression}`)();
-  } catch {
-    return 'Invalid expression';
-  }
+): number => {
+  // Replace variable 'x' with its actual numeric value
+  const sanitizedExpression = expression.replace(/x/g, `(${variableValue})`);
+  return new Function(`return ${sanitizedExpression}`)();
 };
 
-export const mathFunctions: Record<string, MathFunction> = {
-  addEquation: evaluateExpression,
-  subtractEquation: evaluateExpression,
-  multiplyEquation: evaluateExpression,
-  divideEquation: evaluateExpression,
-  exponentEquation: evaluateExpression
+export const findFunctionByKey = (
+  functions: FunctionItem[],
+  functionKey: string
+): { function: FunctionItem | undefined; index: number } => {
+  const index = functions.findIndex((fn) => fn.key === functionKey);
+  return { function: functions[index], index };
 };
