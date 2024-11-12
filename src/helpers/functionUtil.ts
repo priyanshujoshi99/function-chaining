@@ -8,13 +8,23 @@ export const validateFunctionInput = (input: string): boolean => {
   return validPattern.test(input);
 };
 
-export const evaluateExpression = (
-  expression: string,
-  variableValue: number = 0
+export const evaluateEquation = (
+  equation: string,
+  variableValue: number
 ): number => {
-  // Replace variable 'x' with its actual numeric value
-  const sanitizedExpression = expression.replace(/x/g, `(${variableValue})`);
-  return new Function(`return ${sanitizedExpression}`)();
+  // Remove all spaces from the equation
+  equation = equation.replace(/\s/g, '');
+
+  // Replace any number followed by 'x' or 'x' followed by number with multiplication
+  // For example: 2x becomes 2*x
+  equation = equation.replace(/(\d)x/g, `$1*${variableValue}`);
+  equation = equation.replace(/x(\d)/g, `${variableValue}*$1`);
+
+  // Replace any remaining 'x' with the variable value
+  equation = equation.replace(/x/g, variableValue.toString());
+
+  // Evaluate the equation
+  return eval(equation);
 };
 
 export const findFunctionByKey = (

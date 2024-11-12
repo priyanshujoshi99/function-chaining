@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux';
 import { MAX_CARDS } from '../helpers/constants';
-import { evaluateExpression } from '../helpers/functionUtil';
+import { evaluateEquation } from '../helpers/functionUtil';
 import { getAllFunctionValues, getVariableValue } from '../slice/functionSlice';
 
 export const useCalculateValue = () => {
@@ -12,7 +12,7 @@ export const useCalculateValue = () => {
 
   fnValues.forEach(({ value }) => {
     if (value.trim() === '') return;
-    val += evaluateExpression(value, variableValue);
+    val += evaluateEquation(value, variableValue);
   });
 
   return val;
