@@ -1,0 +1,28 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 95vh;
+}
+
+.row1 {
+  display: flex;
+  align-items: flex-end;
+  gap: 131px;
+}
+
+.input {
+  margin-right: -121px;
+}
+
+.output {
+  margin-left: -121px;
+}
+
+.row2 {
+  display: flex;
+  justify-content: center;
+  margin-top: 107px;
+  gap: 134px;
+}

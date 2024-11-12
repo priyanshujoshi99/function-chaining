@@ -5,11 +5,13 @@ import styles from './InputNumber.module.css';
 interface InputNumberProps {
   type?: 'input' | 'output';
   value?: number;
+  className?: string;
 }
 
 const InputNumber: React.FC<InputNumberProps> = ({
   type = 'input',
-  value: propValue
+  value: propValue,
+  className
 }) => {
   const [value, setValue] = useState(2);
 
@@ -23,10 +25,13 @@ const InputNumber: React.FC<InputNumberProps> = ({
   };
 
   return (
-    <section className={styles.container} aria-live="polite">
+    <section
+      className={classNames(styles.container, className)}
+      aria-live="polite"
+    >
       <label
         htmlFor="inputNumberField"
-        className={classNames(styles.label, {
+        className={classNames({
           [styles.outputLabel]: isOutput,
           [styles.inputLabel]: !isOutput
         })}
