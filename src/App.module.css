@@ -4,27 +4,25 @@
   align-items: center;
   justify-content: center;
   height: 95vh;
+  gap: 107px;
 }
 
-.row1 {
+.row {
   display: flex;
   align-items: flex-end;
+  gap: 10px;
+}
+
+.cardRow {
+  display: flex;
+  justify-content: center;
   gap: 131px;
 }
 
 .input {
-  margin-right: -121px;
   margin-bottom: 7px;
 }
 
 .output {
-  margin-left: -121px;
-  margin-bottom: 7px;
-}
-
-.row2 {
-  display: flex;
-  justify-content: center;
-  margin-top: 107px;
-  gap: 134px;
+  composes: input;
 }
