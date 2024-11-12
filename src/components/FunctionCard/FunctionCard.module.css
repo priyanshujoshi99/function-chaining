@@ -106,6 +106,15 @@
   border-radius: 50%;
 }
 
+.circle::after {
+  content: '';
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background-color: hsla(216, 100%, 70%, 1);
+  border-radius: 50%;
+}
+
 .text {
   font-family: Inter;
   font-size: 10px;
