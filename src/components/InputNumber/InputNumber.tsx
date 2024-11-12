@@ -1,7 +1,9 @@
 import classNames from 'classnames';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useDebounce } from '../../hooks/useDebounce';
 import { getVariableValue, saveVariableValue } from '../../slice/functionSlice';
+
 import styles from './InputNumber.module.css';
 
 interface InputNumberProps {
@@ -16,15 +18,20 @@ const InputNumber: React.FC<InputNumberProps> = ({
   className
 }) => {
   const dispatch = useDispatch();
-  const value = useSelector(getVariableValue);
+  const reduxValue = useSelector(getVariableValue);
 
   const isOutput = type === 'output';
   const labelText = isOutput ? 'Final Output y' : 'Initial value of x';
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (!isOutput) {
-      dispatch(saveVariableValue(Number(event.target.value)));
+  const handleDebouncedInputChange = useDebounce((newValue: number) => {
+    if (!isOutput && newValue !== reduxValue) {
+      dispatch(saveVariableValue(newValue));
     }
+  }, 500);
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = Number(event.target.value);
+    handleDebouncedInputChange(newValue);
   };
 
   return (
@@ -48,7 +55,6 @@ const InputNumber: React.FC<InputNumberProps> = ({
             id="inputNumberField"
             type="number"
             value={propValue}
-            onChange={handleInputChange}
             readOnly
             className={styles.output}
             aria-readonly={isOutput}
@@ -59,7 +65,7 @@ const InputNumber: React.FC<InputNumberProps> = ({
           <input
             id="inputNumberField"
             type="number"
-            value={value}
+            value={reduxValue}
             onChange={handleInputChange}
             className={styles.input}
           />

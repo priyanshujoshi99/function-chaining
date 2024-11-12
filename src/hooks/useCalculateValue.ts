@@ -1,19 +1,25 @@
 import { useSelector } from 'react-redux';
 import { MAX_CARDS } from '../helpers/constants';
-import { evaluateEquation } from '../helpers/functionUtil';
-import { getAllFunctionValues, getVariableValue } from '../slice/functionSlice';
+import {
+  evaluateEquation,
+  sortFunctionArrayInSequence
+} from '../helpers/functionUtil';
+import { getAllFunctions, getVariableValue } from '../slice/functionSlice';
 
 export const useCalculateValue = () => {
-  const fnValues = useSelector(getAllFunctionValues);
+  const functionsFromState = useSelector(getAllFunctions);
   const variableValue = useSelector(getVariableValue);
-  let val = 0;
 
-  if (fnValues.length !== MAX_CARDS) return;
+  if (functionsFromState.length !== MAX_CARDS) return;
 
-  fnValues.forEach(({ value }) => {
+  let res = variableValue;
+
+  const sortedFnArray = sortFunctionArrayInSequence(functionsFromState);
+
+  sortedFnArray.forEach(({ value }) => {
     if (value.trim() === '') return;
-    val += evaluateEquation(value, variableValue);
+    res = evaluateEquation(value, res);
   });
 
-  return val;
+  return res;
 };

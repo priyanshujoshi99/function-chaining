@@ -1,8 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import {
-  findFunctionByKey,
-  validateFunctionInput
-} from '../helpers/functionUtil';
+import { findFunctionByKey } from '../helpers/functionUtil';
 
 export type FunctionItem = {
   key: string;
@@ -38,7 +35,6 @@ export const functionSlice = createSlice({
       }>
     ) => {
       const { functionKey, functionValue, nextFn } = action.payload;
-      if (!validateFunctionInput(functionValue)) return;
 
       const { function: fn, index } = findFunctionByKey(
         state.functions,
@@ -64,7 +60,7 @@ export const { saveVariableValue, saveFunctionValue } = functionSlice.actions;
 export const getVariableValue = (state: { [prefix]: FunctionSliceState }) =>
   state[prefix].variableValue;
 
-export const getFunctionValue =
+export const getFunction =
   (functionKey: string) =>
   (state: { [prefix]: FunctionSliceState }): FunctionItem =>
     state[prefix].functions.find((fn) => fn.key === functionKey) ?? {
@@ -73,6 +69,6 @@ export const getFunctionValue =
       nextFn: ''
     };
 
-export const getAllFunctionValues = (state: {
+export const getAllFunctions = (state: {
   [prefix]: FunctionSliceState;
 }): FunctionItem[] => state[prefix].functions;

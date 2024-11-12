@@ -23,8 +23,13 @@ export const evaluateEquation = (
   // Replace any remaining 'x' with the variable value
   equation = equation.replace(/x/g, variableValue.toString());
 
-  // Evaluate the equation
-  return eval(equation);
+  try {
+    const result = new Function('return ' + equation)();
+    return typeof result === 'number' ? result : variableValue;
+  } catch (e) {
+    console.error('Error evaluating equation:', e);
+    return variableValue;
+  }
 };
 
 export const findFunctionByKey = (
@@ -34,3 +39,19 @@ export const findFunctionByKey = (
   const index = functions.findIndex((fn) => fn.key === functionKey);
   return { function: functions[index], index };
 };
+
+export function sortFunctionArrayInSequence(arr: FunctionItem[]) {
+  let current = arr.find((element) => element.key === 'Function: 1');
+  let sequence = [];
+
+  while (current && current.nextFn !== '-') {
+    sequence.push(current);
+    current = arr.find((element) => element.key === current?.nextFn);
+  }
+
+  if (current) {
+    sequence.push(current);
+  }
+
+  return sequence;
+}

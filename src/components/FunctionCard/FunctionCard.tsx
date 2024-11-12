@@ -1,24 +1,41 @@
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getFunctionValue, saveFunctionValue } from '../../slice/functionSlice';
+import { validateFunctionInput } from '../../helpers/functionUtil';
+import { useDebounce } from '../../hooks/useDebounce';
+import { getFunction, saveFunctionValue } from '../../slice/functionSlice';
 import styles from './FunctionCard.module.css';
 
-interface IFunctionCarProps {
+interface IFunctionCardProps {
   cardTitle: string;
   nextFunction: string;
 }
 
-const FunctionCard = ({ cardTitle, nextFunction }: IFunctionCarProps) => {
+const FunctionCard = ({ cardTitle, nextFunction }: IFunctionCardProps) => {
   const dispatch = useDispatch();
-  const { value } = useSelector(getFunctionValue(cardTitle));
+  const { value: reduxValue } = useSelector(getFunction(cardTitle));
+  const [localValue, setLocalValue] = useState(reduxValue);
+
+  useEffect(() => {
+    setLocalValue(reduxValue);
+  }, [reduxValue]);
+
+  const handleDebouncedInputChange = useDebounce((newValue: string) => {
+    if (newValue !== reduxValue) {
+      dispatch(
+        saveFunctionValue({
+          functionKey: cardTitle,
+          functionValue: newValue,
+          nextFn: nextFunction
+        })
+      );
+    }
+  }, 500);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(
-      saveFunctionValue({
-        functionKey: cardTitle,
-        functionValue: event.target.value,
-        nextFn: nextFunction
-      })
-    );
+    const value = event.target.value;
+    if (!validateFunctionInput(value)) return;
+    setLocalValue(value);
+    handleDebouncedInputChange(value);
   };
 
   return (
@@ -37,8 +54,9 @@ const FunctionCard = ({ cardTitle, nextFunction }: IFunctionCarProps) => {
             type="text"
             id="equationInput"
             className={styles.input}
-            value={value}
+            value={localValue}
             onChange={handleInputChange}
+            onBlur={() => handleDebouncedInputChange(localValue)}
           />
         </div>
         <div className={styles.nextFn}>
