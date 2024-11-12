@@ -27,7 +27,7 @@
   justify-content: space-between;
   border: 2px solid hsla(36, 100%, 70%, 1);
   border-radius: 12px;
-  padding: 6px 12px;
+  padding: 6px 0px 6px 12px;
   width: 115px;
   height: 30px;
   position: relative;
@@ -36,7 +36,7 @@
 .inputContainer::before {
   content: '';
   position: absolute;
-  left: 81px;
+  left: 86px;
   height: 100%;
   width: 1px;
   background-color: hsla(36, 100%, 92%, 1);
