@@ -19,6 +19,7 @@
   display: flex;
   justify-content: center;
   gap: 131px;
+  /* margin-left: -2px; */
 }
 
 .input {
@@ -27,4 +28,15 @@
 
 .output {
   composes: input;
+}
+
+.connectorOne {
+  background: url('../../assets/connector-one.svg') no-repeat center center;
+  width: 60px;
+  height: 7.09px;
+  margin: 0px -35px 0px -35px;
+  position: relative;
+  top: -27px;
+  left: 0px;
+  z-index: 1;
 }
